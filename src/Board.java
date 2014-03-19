@@ -19,25 +19,13 @@ public class Board {
         }
     }
 
-    public boolean hasShip(int x, int y){
-        return board[x][y].isOccupied();
-    }
-
     public boolean attemptPlacement(int x, int y, Ship ship){
         List<Cell> cells = new ArrayList<Cell>();
         final int size = ship.getType().getSize();
 
         if(ship.isHorizontal()){
-            for(int i = 0; i < size; i++){
-                if((y+i) >= board.length){
-                    return false;
-                }
-                if(board[x][y+i].isOccupied()){
-                    return false;
-                }
-                else{
-                    cells.add(board[x][y+i]);
-                }
+            if (doDis(x, y, cells, size)){
+                return false;
             }
         }
         else{
@@ -57,5 +45,20 @@ public class Board {
             cell.storeShip(ship);
         }
         return true;
+    }
+
+    private boolean doDis(int x, int y, List<Cell> cells, int size) {
+        for(int i = 0; i < size; i++){
+            if((y+i) >= board.length){
+                return true;
+            }
+            if(board[x][y+i].isOccupied()){
+                return true;
+            }
+            else{
+                cells.add(board[x][y+i]);
+            }
+        }
+        return false;
     }
 }
